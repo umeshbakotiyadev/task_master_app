@@ -1,18 +1,20 @@
-import { View, Text, Alert } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { ButtonX, MasterView, UserDetailesCardItem } from '../../components'
+import { ButtonX, MasterView, PressX, TaskDetailsCardItem } from '../../components'
 import { FlatList } from 'react-native-gesture-handler'
 import { useAPIs, useThemeX } from '../../hooks'
-import { userDataType } from '../../types'
-import { makeUserDataForLocalStoreFN, pLOG } from '../../functions'
+import { defStyObjType, taskListDataType } from '../../types'
+import { makeTaskListDataForLocalStoreFN, pLOG } from '../../functions'
 import useZuStore from '../../store/useZuStore'
 import { bSpace, btnHeight } from '../../utils'
+import { PLUSH_IC } from '../../assets'
 
-const ListAllTaskController = () => {
+const ListAllTaskController = ({ navigation }: any) => {
 
-    const { top, col, str } = useThemeX();
     const { getUserDetailsAPI } = useAPIs();
-    const { setUsersData, usersData } = useZuStore();
+    const { setTaskListData, taskListData } = useZuStore();
+    const { top, col, str, defStyOBJ } = useThemeX();
+    const sty = styFN(defStyOBJ);
 
     const [topLoading, setTopLoading] = useState<boolean>(false);
     const [bottomLoading, setBottomLoading] = useState<boolean>(false);
@@ -20,12 +22,12 @@ const ListAllTaskController = () => {
     const [abLoader, setABLoader] = useState<boolean>(false);
     const [status, setStatus] = useState<boolean | null>(null);
 
-    const usersDataArr = useMemo((): Array<userDataType> => {
-        return Object.values(usersData).filter((item) => status == null ? item : (item?.completed === status));
-    }, [usersData, status]);
-
-    const flatListRef = useRef<FlatList<any>>(null);
     const hasNextPageRef = useRef<boolean>(true);
+
+    const usersDataArr = useMemo((): Array<taskListDataType> => {
+        return Object.values(taskListData).filter((item) => status == null ? item : (item?.completed === status));
+    }, [taskListData, status]);
+
 
     async function getUserDetails({ topRefresh = false, bottomRefresh = false }
         : { topRefresh?: boolean, bottomRefresh?: boolean; }) {
@@ -40,7 +42,7 @@ const ListAllTaskController = () => {
         getUserDetailsAPI().then(({ res }) => {
             hasNextPageRef.current = !!(res?.next);
             if (Array.isArray(res)) {
-                setUsersData(makeUserDataForLocalStoreFN(res));
+                setTaskListData(makeTaskListDataForLocalStoreFN(res));
             }
             setBottomLoading(false); setTopLoading(false); setScrLoading(false);
         }).finally(() => {
@@ -49,8 +51,11 @@ const ListAllTaskController = () => {
     }
 
     const renderItem = useCallback(({ item, index }:
-        { item: userDataType, index: number }) => <UserDetailesCardItem
-            {...item} />, [usersDataArr]);
+        { item: taskListDataType, index: number }) => <TaskDetailsCardItem
+            {...item}
+            description="kafjkdshfjlkas"
+            onPress={() => navigation.navigate("TaskDetailsScr", item)}
+        />, [usersDataArr]);
 
     useEffect(() => {
         getUserDetails({ topRefresh: true });
@@ -95,7 +100,29 @@ const ListAllTaskController = () => {
             keyExtractor={(_, index) => String(index)}
             renderItem={renderItem}
         />
+        <PressX
+            onPress={() => navigation.navigate("AddFriendScr")}
+            children={<PLUSH_IC color={col.WHITE} />}
+            mSty={sty.addExpenseBtn_mSty}
+            cSty={sty.addExpenseBtn_cSty} />
     </MasterView>)
 }
 
 export default ListAllTaskController
+
+const styFN = ({ font, col, bottom }: defStyObjType) => StyleSheet.create({
+    addExpenseBtn_mSty: {
+        flex: undefined,
+        marginVertical: bSpace / 2,
+        marginHorizontal: bSpace,
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+    },
+    addExpenseBtn_cSty: {
+        padding: 8,
+        backgroundColor: col.PRIMARY,
+        borderRadius: 10
+    },
+
+});

@@ -1,4 +1,4 @@
-import { Pressable, Platform, PressableAndroidRippleConfig, ActivityIndicator } from 'react-native'
+import { Pressable, Platform, PressableAndroidRippleConfig, ActivityIndicator, TouchableOpacity } from 'react-native'
 import React, { memo, useCallback, useState } from 'react'
 import { PressXType, } from '../../Types'
 import { useThemeX } from '../../hooks';
@@ -84,13 +84,8 @@ const PressXCompo = ({
             hitSlop={hitSlop ?? 5}
             disabled={disabled || loading}
             android_ripple={{ borderless: false, foreground: true, radius: _WIDTH / 2, ...rippleStyX() }}
-            style={({ pressed }) => {
-                return [
-                    { overflow: 'hidden' },
-                    cSty,
-                ];
-            }}
-        // {...cProps}
+            // {...cProps}
+            style={[{ overflow: 'hidden' }, cSty]}
         >{loading ? loadingView : children ? children : text ? textView : <></>}</Pressable>
     </Animated.View >
 }

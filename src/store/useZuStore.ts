@@ -11,7 +11,7 @@ import zuStandStorage from './zustandStorage';
 const useZuStore = create<zuStandStoreOBJType>()(
     persist((set) => ({
         ...zuStandStoreOBJ,
-        setUsersData: by => set((state) => ({ usersData: { ...state?.usersData, ...by } })),
+        setTaskListData: by => set((state) => ({ taskListData: { ...state?.taskListData, ...by } })),
     }), {
         "name": '@AppForStore',
         "storage": createJSONStorage(() => zuStandStorage),

@@ -24,11 +24,11 @@ const sbH = StatusBar.currentHeight || 0;
 const onStateChange: any = React.createRef<any>();
 
 const zuStandInitStore: zuStandInitStoreType = {
-    usersData: {},
+    taskListData: {},
 };
 
 const setZuStandInitStore: setZuStandInitStoreType = {
-    setUsersData(by) { },
+    setTaskListData(by) { },
 }
 
 const zuStandStoreOBJ: zuStandStoreOBJType = { ...zuStandInitStore, ...setZuStandInitStore };

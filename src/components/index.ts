@@ -6,11 +6,10 @@ import PressX from "./XCompos/PressXCompo";
 import TextX from "./XCompos/TextXCompo";
 import TextInputX from "./XCompos/TextInputXCompo";
 import ButtonX from "./XCompos/ButtonXCompo";
-// import BottomSheetX from "./XCompos/BottomSheetXCompo";
 import ScrLoader from "./XCompos/ScrLoaderCompo";
-import UserDetailesCardItem from "./UserDetailesCardItemCompo";
+import TaskDetailsCardItem from "./TaskDetailsCardItemCompo";
 
 export {
     PressX, MasterView, HeaderX, StatusBarX, TextX, TextInputX, ButtonX,
-    ScrLoader, ToastAlert, UserDetailesCardItem
+    ScrLoader, ToastAlert, TaskDetailsCardItem
 }

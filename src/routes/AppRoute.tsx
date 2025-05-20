@@ -5,6 +5,7 @@ import BottomTab from './BottomTab';
 import { ToastAlert } from '../components';
 import { useMMKVStore } from '../hooks';
 import { View } from 'react-native';
+import { TaskDetailsScr } from '../screens';
 
 const AppRoute = () => {
 
@@ -17,6 +18,7 @@ const AppRoute = () => {
         <NavigationContainer>
             <AppStack.Navigator>
                 <AppStack.Screen name={"BottomTab"} component={BottomTab} options={{ headerShown: false }} />
+                <AppStack.Screen name={"TaskDetailsScr"} component={TaskDetailsScr} options={{ headerShown: false }} />
             </AppStack.Navigator>
         </NavigationContainer>
         <ToastAlert {...toast} setToast={setToast} />

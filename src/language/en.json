@@ -19,5 +19,8 @@
     "SOMETHING_ITS_WRONG_PLZ_TRY_AGAIN": "Something is wrong, Please try again!",
     "ALL": "All",
     "COMPLETED": "Completed",
-    "INCOMPLETED": "Incompleted"
+    "INCOMPLETED": "Incompleted",
+    "TASK_DETAILS": "Task Details",
+    "EDITE": "Edite",
+    "DELETE": "Delete"
 }

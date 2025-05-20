@@ -12,11 +12,11 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { AndroidPermission, IOSPermission } from "react-native-permissions";
 
 type zuStandInitStoreType = {
-    usersData: userDataObjType;
+    taskListData: taskListDataOBJType;
 }
 
 type setZuStandInitStoreType = {
-    setUsersData: (by: userDataObjType) => void;
+    setTaskListData: (by: taskListDataOBJType) => void;
 }
 
 type zuStandStoreOBJType = zuStandInitStoreType & setZuStandInitStoreType;
@@ -304,14 +304,15 @@ type rationaleType = {
     buttonNegative?: string,
 }
 
-type userDataType = {
+type taskListDataType = {
     userId?: number;
     id?: number;
     title?: string;
+    description?: string;
     completed?: boolean;
 }
 
-type userDataObjType = { [key: string]: userDataType };
+type taskListDataOBJType = { [key: string]: taskListDataType };
 
 
 export type {
@@ -320,5 +321,5 @@ export type {
     defStyObjType, headerType, statusBarType, MasterViewType, ToastType,
     TextInputXType, TextXType, StackProps, getImageMetaDataType,
     checkPermissionType, PermissionResultType, permissionsType, rationaleType,
-    userDataType, userDataObjType
+    taskListDataType, taskListDataOBJType
 }

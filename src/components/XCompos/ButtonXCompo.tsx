@@ -9,12 +9,13 @@ const ButtonXCompo = (porps: PressXType & { transparent?: boolean }) => {
     const { transparent } = porps;
     const { col, font } = useThemeX();
     return (<PressXCompo
+        {...porps}
         tSty={{
             color: transparent ? col.BTN_BGCOL : col.BTN_TEXT_COL,
             fontFamily: font.BOLD,
             fontSize: Size(15),
+            ...porps?.tSty
         }}
-        {...porps}
         cSty={{
             borderWidth: 1,
             borderColor: col.BTN_BGCOL,

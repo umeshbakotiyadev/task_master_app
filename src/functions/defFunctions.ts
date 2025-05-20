@@ -1,7 +1,7 @@
 import { Dimensions } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { _isDEV, _isPUBLISH_MODE } from "../utils";
-import { userDataObjType, userDataType } from "../types";
+import { taskListDataOBJType, taskListDataType } from "../types";
 
 
 const _HEIGHT = Dimensions.get('window').height;
@@ -73,10 +73,10 @@ const isValid = {
     isSame: function (str1: string, str2: string) {
         return str1 === str2;
     },
-    isValidNumber: ({ max = 999999999, min = 0, text = '' }: { max?: number, min?: number, text: string }) => {
-        const pattern = new RegExp(`^[0-9]{${min},${max}}$`);
-        return pattern.test(text);
-    }
+    // isValidNumber: ({ max = 999999999, min = 0, text = '' }: { max?: number, min?: number, text: string }) => {
+    //     const pattern = new RegExp(`^[0-9]{${min},${max}}$`);
+    //     return pattern.test(text);
+    // }
 };
 
 function deepClone<T>(arr: T[]): T[] /* | any[] */ {
@@ -100,8 +100,8 @@ const pLOG = (label = "label", data: any = [], type: 'l' | 'w' | 'e' = 'l') => {
     if (type == 'e') if (Array.isArray(data)) for (const item of data) { console.error(label || "error", "::", iDX, "::", item); iDX++; } else console.error(label || "error", ":::", JSON.stringify(data, null, 2));
 }
 
-function makeUserDataForLocalStoreFN(data: Array<userDataType>): userDataObjType {
-    const dataOBJ: userDataObjType = {};
+function makeTaskListDataForLocalStoreFN(data: Array<taskListDataType>): taskListDataOBJType {
+    const dataOBJ: taskListDataOBJType = {};
     data.forEach(ele => {
         if (!ele?.id) return;
         const fID = ele?.id ?? generateUniqueID();
@@ -113,5 +113,5 @@ function makeUserDataForLocalStoreFN(data: Array<userDataType>): userDataObjType
 export {
     Size, _HEIGHT, _WIDTH, decimal, generateUniqueID, isUrl, deepClone, isValid,
     isErr, regex, isValidUrl, pLOG,
-    makeUserDataForLocalStoreFN
+    makeTaskListDataForLocalStoreFN
 }

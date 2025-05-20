@@ -32,7 +32,7 @@ const MasterViewCompo = ({
                 {scrLoader ? <ScrLoaderCompo loading={scrLoader} />
                     : (<>
                         {tSvg && tSvg}
-                        {fixed ? (<View style={{ flex: 1 }} children={children} />)
+                        {fixed ? (<View style={[{ flex: 1 }, style]} children={children} />)
                             : gScroll ? (
                                 <ScrollViewG
                                     ref={scrollViewRef}
