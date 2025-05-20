@@ -79,7 +79,6 @@ const CompoStyFN = ({ font, col, bottom }: defStyObjType) => StyleSheet.create({
         fontFamily: font.REGULAR,
         fontWeight: '400',
         fontSize: Size(13),
-        paddingLeft: 10,
         color: col.TOAST_TEXT,
         maxWidth: _WIDTH * .7
     },

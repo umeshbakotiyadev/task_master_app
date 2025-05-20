@@ -8,8 +8,9 @@ import TextInputX from "./XCompos/TextInputXCompo";
 import ButtonX from "./XCompos/ButtonXCompo";
 // import BottomSheetX from "./XCompos/BottomSheetXCompo";
 import ScrLoader from "./XCompos/ScrLoaderCompo";
+import UserDetailesCardItem from "./UserDetailesCardItemCompo";
 
 export {
     PressX, MasterView, HeaderX, StatusBarX, TextX, TextInputX, ButtonX,
-    ScrLoader
+    ScrLoader, ToastAlert, UserDetailesCardItem
 }

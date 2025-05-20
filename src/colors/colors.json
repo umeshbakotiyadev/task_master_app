@@ -23,7 +23,7 @@
     "WHITE09": "rgba(256,256,256,0.9)",
     "SHADOW": "rgba(184, 184, 184, 0.1)",
     "LAYER": "rgba(217, 217, 217, 0.3)",
-    "PRIMARY": "#C2F0F0",
+    "PRIMARY": "#015756",
     "SECONDARY": "#E6E6FA",
     "BTN_BGCOL": "#FF7F50",
     "BTN_TEXT_COL": "#FFFFFF",
@@ -40,7 +40,7 @@
     "INPUT_BG": "#343131",
     "TOAST_OUTLINE": "rgba(0,0,0,.1)",
     "TOAST_BG": "rgba(0,0,0,.1)",
-    "TOAST_TEXT": "black",
+    "TOAST_TEXT": "white",
     "TEXT_COL": "black",
     "BOOTOM_TAB_BG": "#015756"
 }

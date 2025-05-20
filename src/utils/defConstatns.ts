@@ -4,7 +4,7 @@ import { Platform, StatusBar } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-const _isDEV = false;
+const _isDEV = true;
 const _isPUBLISH_MODE = false;
 
 const AppStack = createNativeStackNavigator();
@@ -24,11 +24,11 @@ const sbH = StatusBar.currentHeight || 0;
 const onStateChange: any = React.createRef<any>();
 
 const zuStandInitStore: zuStandInitStoreType = {
-
+    usersData: {},
 };
 
 const setZuStandInitStore: setZuStandInitStoreType = {
-    // setProducts(by) { },
+    setUsersData(by) { },
 }
 
 const zuStandStoreOBJ: zuStandStoreOBJType = { ...zuStandInitStore, ...setZuStandInitStore };

@@ -12,10 +12,11 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { AndroidPermission, IOSPermission } from "react-native-permissions";
 
 type zuStandInitStoreType = {
+    usersData: userDataObjType;
 }
 
 type setZuStandInitStoreType = {
-    // setProducts: (by: productsDyOBJType) => void;
+    setUsersData: (by: userDataObjType) => void;
 }
 
 type zuStandStoreOBJType = zuStandInitStoreType & setZuStandInitStoreType;
@@ -134,6 +135,10 @@ type statusBarType = {
 
 type MasterViewType = {
     children?: ReactNode | React.JSX.Element;
+    scrollViewRef?: any;
+    bounces?: boolean;
+    scrollEnabled?: boolean;
+    onScroll?: ScrollViewProps['onScroll'];
     pT?: number;
     pB?: number;
     pH?: number;
@@ -299,11 +304,21 @@ type rationaleType = {
     buttonNegative?: string,
 }
 
+type userDataType = {
+    userId?: number;
+    id?: number;
+    title?: string;
+    completed?: boolean;
+}
+
+type userDataObjType = { [key: string]: userDataType };
+
 
 export type {
     setZuStandInitStoreType, zuStandInitStoreType, zuStandStoreOBJType,
     kBehavior, ApiCallType, ApiResType, PressXType, colorType, fontType,
     defStyObjType, headerType, statusBarType, MasterViewType, ToastType,
     TextInputXType, TextXType, StackProps, getImageMetaDataType,
-    checkPermissionType, PermissionResultType, permissionsType, rationaleType
+    checkPermissionType, PermissionResultType, permissionsType, rationaleType,
+    userDataType, userDataObjType
 }

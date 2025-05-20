@@ -1,5 +1,7 @@
 import { Dimensions } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
+import { _isDEV, _isPUBLISH_MODE } from "../utils";
+import { userDataObjType, userDataType } from "../types";
 
 
 const _HEIGHT = Dimensions.get('window').height;
@@ -90,10 +92,26 @@ function deepClone<T>(arr: T[]): T[] /* | any[] */ {
     });
 };
 
+const pLOG = (label = "label", data: any = [], type: 'l' | 'w' | 'e' = 'l') => {
+    if (_isPUBLISH_MODE || !_isDEV) return;
+    let iDX = 1;
+    if (type == 'l') if (Array.isArray(data)) for (const item of data) { console.log(label || "log", "::", iDX, "::", item); iDX++; } else console.log(label || "log", ":::", data);
+    if (type == 'w') if (Array.isArray(data)) for (const item of data) { console.warn(label || "warn", "::", iDX, "::", item); iDX++; } else console.warn(label || "warn", ":::", data);
+    if (type == 'e') if (Array.isArray(data)) for (const item of data) { console.error(label || "error", "::", iDX, "::", item); iDX++; } else console.error(label || "error", ":::", JSON.stringify(data, null, 2));
+}
 
-
+function makeUserDataForLocalStoreFN(data: Array<userDataType>): userDataObjType {
+    const dataOBJ: userDataObjType = {};
+    data.forEach(ele => {
+        if (!ele?.id) return;
+        const fID = ele?.id ?? generateUniqueID();
+        dataOBJ[ele?.id ?? "--"] = { ...ele, id: fID };
+    });
+    return dataOBJ;
+}
 
 export {
     Size, _HEIGHT, _WIDTH, decimal, generateUniqueID, isUrl, deepClone, isValid,
-    isErr, regex, isValidUrl
+    isErr, regex, isValidUrl, pLOG,
+    makeUserDataForLocalStoreFN
 }

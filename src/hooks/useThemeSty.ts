@@ -8,7 +8,7 @@ import { CompoStyFN, HeaderStyFN } from "../styles";
 
 const useThemeXSty = () => {
 
-    const _str = useString();
+    const str = useString();
     const sAI: EdgeInsets = useSafeAreaInsets();
 
     const col: colorType = useMemo((): any => (_COL), [_COL]);
@@ -23,7 +23,7 @@ const useThemeXSty = () => {
     const cpSty = CompoStyFN(defStyOBJ);
 
     return {
-        ...sAI, col, _str, font, defStyOBJ,
+        ...sAI, col, str, font, defStyOBJ,
         hdSty, cpSty
     };
 };

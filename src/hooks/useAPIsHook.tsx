@@ -1,15 +1,17 @@
 import { useEffect } from 'react';
-import { BackHandler, NativeEventEmitter, NativeModules } from 'react-native';
+import { BackHandler, NativeEventEmitter, NativeModules, Platform } from 'react-native';
 import { runOnJS } from 'react-native-reanimated';
 import { useIsFocused } from '@react-navigation/native';
 import { ApiCallType, ApiResType, } from '../types';
 import { isErr } from '../functions';
 import useZuStore from '../store/useZuStore';
 import { isIOS } from '../utils';
+import { useMMKVStore } from '.';
 
 const useAPIsHook = () => {
 
   const isFocused = useIsFocused();
+  const { setToast } = useMMKVStore();
   const { abort, signal } = new AbortController();
   const { } = useZuStore();
 
@@ -48,18 +50,13 @@ const useAPIsHook = () => {
     try {
 
       let raw = {
-        method, signal,
+        method: method,
         headers: headR(token, urlencoded, multipart, shopifyXToken),
         body: urlencoded ? body : JSON.stringify(body),
       };
       if (body) raw["body"] = urlencoded ? JSON.stringify(body) : body;
 
       let resJSON;
-
-      // console.log(`headR:::`, isIOS, "::", raw?.headers);
-      // console.log(`resBODY:::`, isIOS, "::", endPath, "::", "body::", JSON.stringify(body, null, 5), "\n", "params::", params);
-
-      // console.log("uri::", url);
 
       let res: any = await fetch(url, raw);
       // console.log(`res:::`, isIOS, "::", endPath, "::", await res?.text(), JSON.stringify(res, null, 5));
@@ -79,7 +76,8 @@ const useAPIsHook = () => {
       };
 
     } catch (err: any) {
-      console.log(`Error:: ${isIOS} :: ${url} ::: `, err);
+      console.log(`Error:: PlatForm-${Platform.OS} :: ${url} ::: `, err);
+      setToast({ show: true, msg: String(err) });
       return { code: 404, res: undefined, url: "", status: false, err: true, message: err?.message };
     }
   }
@@ -124,12 +122,12 @@ const useAPIsHook = () => {
   //   }
   // }
 
-  // async function docUploadInKSServerAPI(uploadingImages: Array<string> = [], deleteImages: Array<string> = []) {
-  //   return fetchREQ({
-  //     apiURI: ksBucketURL, urlencoded: true,
-  //     body: { uploadingImages, deleteImages },
-  //   });
-  // }
+  async function getUserDetailsAPI() {
+    return fetchREQ({
+      apiURI: "https://jsonplaceholder.typicode.com/todos",
+      method: 'GET',
+    });
+  }
 
   function abortAPI() { try { abort(); } catch (e) { /* LOG(e, "ERROR :: abortAPI =>>"); */ } }
   useEffect(() => {
@@ -139,7 +137,7 @@ const useAPIsHook = () => {
   useEffect(() => { if (!isFocused) runOnJS(abortAPI)(); }, [isFocused]);
 
   return {
-    abortAPI,
+    abortAPI, getUserDetailsAPI
   };
 
 }
