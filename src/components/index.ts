@@ -8,8 +8,9 @@ import TextInputX from "./XCompos/TextInputXCompo";
 import ButtonX from "./XCompos/ButtonXCompo";
 import ScrLoader from "./XCompos/ScrLoaderCompo";
 import TaskDetailsCardItem from "./TaskDetailsCardItemCompo";
+import SwitchX from "./XCompos/SwitchXCompo";
 
 export {
     PressX, MasterView, HeaderX, StatusBarX, TextX, TextInputX, ButtonX,
-    ScrLoader, ToastAlert, TaskDetailsCardItem
+    ScrLoader, ToastAlert, TaskDetailsCardItem, SwitchX
 }

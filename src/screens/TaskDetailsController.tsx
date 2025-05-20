@@ -1,5 +1,5 @@
 import { View, Text, Alert, StyleSheet } from 'react-native'
-import React from 'react'
+import React, { useMemo } from 'react'
 import { defStyObjType, taskListDataType } from '../types';
 import { ButtonX, MasterView, TextX } from '../components';
 import { useThemeX } from '../hooks';
@@ -10,11 +10,13 @@ import useZuStore from '../store/useZuStore';
 const TaskDetailsController = ({ route, navigation }: any) => {
 
     const _edit = Boolean(route?.params?._edit);
-    const _item: taskListDataType = route?.params || {};
+    const _itemParams̉: taskListDataType = route?.params || {};
 
     const { setResetTaskListData, taskListData } = useZuStore();
-    const { top, col, str, defStyOBJ } = useThemeX();
+    const { top, col, str, defStyOBJ, bottom } = useThemeX();
     const sty = styFN(defStyOBJ);
+
+    const _item: taskListDataType = useMemo(() => taskListData[_itemParams̉?.id ?? ""], [_itemParams̉, taskListData]);
 
     async function deleteTask() {
         let temp = { ...taskListData };
@@ -23,7 +25,7 @@ const TaskDetailsController = ({ route, navigation }: any) => {
         navigation.goBack();
     }
 
-    return (<MasterView title={str?.TASK_DETAILS} style={{ padding: bSpace }} >
+    return (<MasterView title={str?.TASK_DETAILS} style={{ padding: bSpace, paddingBottom: bSpace + bottom }} >
         <View style={sty.mC}>
             <TextX text={_item?.title} tSty={sty.titleTSty} />
             {_item?.description && <View style={sty.descriptionCSty} >
@@ -31,9 +33,9 @@ const TaskDetailsController = ({ route, navigation }: any) => {
             </View>}
         </View>
         <ButtonX
-            onPress={() => navigation.navigate("AddEditTaskScr", { _edit: true, _item })}
             text={str.EDITE} transparent
             mSty={{ flex: undefined, marginVertical: bSpace }}
+            onPress={() => navigation.navigate("AddEditTaskScr", { _edit: true, _item })}
         />
         <ButtonX
             text={str.DELETE}
@@ -59,7 +61,6 @@ const styFN = ({ font, col, bottom }: defStyObjType) => StyleSheet.create({
         borderWidth: 1,
         borderRadius: bSpace,
         borderColor: col.BLACK02,
-        minHeight: _HEIGHT * .3
     },
     titleTSty: {
         fontFamily: font.SEMI_BOLD,
@@ -73,7 +74,8 @@ const styFN = ({ font, col, bottom }: defStyObjType) => StyleSheet.create({
         backgroundColor: col.BLACK005,
         borderRadius: bSpace,
         marginTop: 5,
-        flex: 1
+        flex: 1,
+        minHeight: _HEIGHT * .3
     },
     descriptionTSty: {
         fontFamily: font.REGULAR,

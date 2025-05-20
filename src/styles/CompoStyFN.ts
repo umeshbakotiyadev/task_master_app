@@ -28,7 +28,7 @@ const CompoStyFN = ({ font, col, bottom }: defStyObjType) => StyleSheet.create({
     inputSty1: {
 
         height: "100%",
-        fontSize: Size(18),
+        fontSize: Size(16),
         color: col.BLACK,
         fontFamily: font.REGULAR,
 

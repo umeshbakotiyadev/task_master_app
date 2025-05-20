@@ -29,4 +29,12 @@
     "NO_RESULTS_FOUND": "No results found!",
     "DELETE_TASK": "Remove Task",
     "ARE_YOU_SURE_REMOVE_TASK": "Are you sure? you want to delete task!!!",
+    "UPDATE_TASK": "Update Task",
+    "CREATE_NEW_TASK": "Create New Task",
+    "SAVE": "Save",
+    "TASK_TITLE": "Task Title",
+    "DESCRIPTION": "Description",
+    "DUE_DATE": "Due Date",
+    "DUE_DATE_REQUIRED": "Due Date Required!!!",
+    "TASK_TITLE_REQUIRED": "Task Title Required!!!"
 }

@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ButtonX, MasterView, PressX, TaskDetailsCardItem, TextX } from '../../components'
 import { useAPIs, useThemeX } from '../../hooks'
 import { defStyObjType, taskListDataType } from '../../types'
-import { makeTaskListDataForLocalStoreFN, pLOG } from '../../functions'
+import { makeTaskListDataForLocalStoreFN } from '../../functions'
 import useZuStore from '../../store/useZuStore'
 import { bSpace, btnHeight } from '../../utils'
 import { PLUSH_IC } from '../../assets'
@@ -22,7 +22,7 @@ const ListAllTaskController = ({ navigation }: any) => {
     const hasNextPageRef = useRef<boolean>(true);
 
     const usersDataArr = useMemo((): Array<taskListDataType> => {
-        return Object.values(taskListData).filter((item) => status == null ? item : (item?.completed === status));
+        return Object.values(taskListData).filter((item) => status == null ? item : (item?.completed === status)).reverse();
     }, [taskListData, status]);
 
 
@@ -50,7 +50,6 @@ const ListAllTaskController = ({ navigation }: any) => {
     const renderItem = useCallback(({ item, index }:
         { item: taskListDataType, index: number }) => <TaskDetailsCardItem
             {...item}
-            description="kafjkdshfjlkas"
             onPress={() => navigation.navigate("TaskDetailsScr", item)}
         />, [usersDataArr]);
 

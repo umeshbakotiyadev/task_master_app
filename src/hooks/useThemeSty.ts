@@ -5,9 +5,11 @@ import useString from "../language";
 import { useMemo } from "react";
 import { _COL } from "../colors";
 import { CompoStyFN, HeaderStyFN } from "../styles";
+import { useMMKVStore } from ".";
 
 const useThemeXSty = () => {
 
+    const { setToast } = useMMKVStore();
     const str = useString();
     const sAI: EdgeInsets = useSafeAreaInsets();
 
@@ -24,7 +26,7 @@ const useThemeXSty = () => {
 
     return {
         ...sAI, col, str, font, defStyOBJ,
-        hdSty, cpSty
+        hdSty, cpSty, setToast
     };
 };
 

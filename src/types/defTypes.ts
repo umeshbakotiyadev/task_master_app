@@ -307,9 +307,10 @@ type rationaleType = {
 
 type taskListDataType = {
     userId?: number;
-    id?: number;
+    id?: string;
     title?: string;
     description?: string;
+    dueDate?: Date;
     completed?: boolean;
 }
 
