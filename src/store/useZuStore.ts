@@ -12,6 +12,7 @@ const useZuStore = create<zuStandStoreOBJType>()(
     persist((set) => ({
         ...zuStandStoreOBJ,
         setTaskListData: by => set((state) => ({ taskListData: { ...state?.taskListData, ...by } })),
+        setResetTaskListData: by => set((state) => ({ taskListData: by })),
     }), {
         "name": '@AppForStore',
         "storage": createJSONStorage(() => zuStandStorage),

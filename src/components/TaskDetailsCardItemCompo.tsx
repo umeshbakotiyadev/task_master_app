@@ -35,10 +35,9 @@ const styFN = ({ col, font }: defStyObjType) => StyleSheet.create({
         borderWidth: 1,
         borderRadius: bSpace,
         borderColor: col.BLACK02,
-        minHeight: 100
     },
     titleTSty: {
-        fontFamily: font.BOLD,
+        fontFamily: font.SEMI_BOLD,
         fontSize: Size(15),
         color: col.BLACK,
         textTransform: 'capitalize'
@@ -51,8 +50,8 @@ const styFN = ({ col, font }: defStyObjType) => StyleSheet.create({
         marginTop: 5
     },
     descriptionTSty: {
-        fontFamily: font.BOLD,
-        fontSize: Size(18),
+        fontFamily: font.REGULAR,
+        fontSize: Size(13),
         color: col.BLACK,
         textTransform: 'capitalize',
     },

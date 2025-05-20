@@ -93,6 +93,7 @@ const CompoStyFN = ({ font, col, bottom }: defStyObjType) => StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+
 });
 
 export default CompoStyFN;

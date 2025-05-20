@@ -29,6 +29,7 @@ const zuStandInitStore: zuStandInitStoreType = {
 
 const setZuStandInitStore: setZuStandInitStoreType = {
     setTaskListData(by) { },
+    setResetTaskListData(by) { },
 }
 
 const zuStandStoreOBJ: zuStandStoreOBJType = { ...zuStandInitStore, ...setZuStandInitStore };

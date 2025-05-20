@@ -17,6 +17,7 @@ type zuStandInitStoreType = {
 
 type setZuStandInitStoreType = {
     setTaskListData: (by: taskListDataOBJType) => void;
+    setResetTaskListData: (by: taskListDataOBJType) => void;
 }
 
 type zuStandStoreOBJType = zuStandInitStoreType & setZuStandInitStoreType;

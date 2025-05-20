@@ -1,7 +1,6 @@
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, RefreshControl, FlatList } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { ButtonX, MasterView, PressX, TaskDetailsCardItem } from '../../components'
-import { FlatList } from 'react-native-gesture-handler'
+import { ButtonX, MasterView, PressX, TaskDetailsCardItem, TextX } from '../../components'
 import { useAPIs, useThemeX } from '../../hooks'
 import { defStyObjType, taskListDataType } from '../../types'
 import { makeTaskListDataForLocalStoreFN, pLOG } from '../../functions'
@@ -13,13 +12,11 @@ const ListAllTaskController = ({ navigation }: any) => {
 
     const { getUserDetailsAPI } = useAPIs();
     const { setTaskListData, taskListData } = useZuStore();
-    const { top, col, str, defStyOBJ } = useThemeX();
+    const { top, col, str, defStyOBJ, cpSty } = useThemeX();
     const sty = styFN(defStyOBJ);
 
     const [topLoading, setTopLoading] = useState<boolean>(false);
     const [bottomLoading, setBottomLoading] = useState<boolean>(false);
-    const [scrLoading, setScrLoading] = useState<boolean>(true);
-    const [abLoader, setABLoader] = useState<boolean>(false);
     const [status, setStatus] = useState<boolean | null>(null);
 
     const hasNextPageRef = useRef<boolean>(true);
@@ -44,9 +41,9 @@ const ListAllTaskController = ({ navigation }: any) => {
             if (Array.isArray(res)) {
                 setTaskListData(makeTaskListDataForLocalStoreFN(res));
             }
-            setBottomLoading(false); setTopLoading(false); setScrLoading(false);
+            setBottomLoading(false); setTopLoading(false);
         }).finally(() => {
-            setBottomLoading(false); setTopLoading(false); setScrLoading(false);
+            setBottomLoading(false); setTopLoading(false);
         });
     }
 
@@ -66,7 +63,7 @@ const ListAllTaskController = ({ navigation }: any) => {
             data={usersDataArr}
             ListHeaderComponent={<>
                 <View style={{ height: top, backgroundColor: col.TRANSPARENT }} />
-                <View style={{ flexDirection: 'row', height: 20 + btnHeight, paddingBottom: 10 }} >
+                {(usersDataArr.length > 0) && <View style={{ flexDirection: 'row', height: 20 + btnHeight, paddingBottom: 10 }} >
                     <ButtonX
                         text={str.ALL}
                         onPress={() => { setStatus(null); }}
@@ -91,17 +88,29 @@ const ListAllTaskController = ({ navigation }: any) => {
                             borderWidth: undefined,
                         }}
                         tSty={{ color: status === false ? col.BTN_TEXT_COL : col.BLACK }} />
-
-                </View>
+                </View>}
             </>
             }
+            refreshControl={<RefreshControl
+                colors={[col.PRIMARY, col.PRIMARY, col.PRIMARY]}
+                tintColor={col.PRIMARY}
+                progressBackgroundColor={col.SECONDARY}
+                refreshing={topLoading}
+                onRefresh={() => getUserDetails({ topRefresh: true })}
+            />}
             contentContainerStyle={{ padding: bSpace }}
-            ItemSeparatorComponent={() => <View style={{ height: bSpace / 2 }} />}
             keyExtractor={(_, index) => String(index)}
             renderItem={renderItem}
+            ItemSeparatorComponent={() => <View style={{ height: bSpace / 2 }} />}
+            ListEmptyComponent={() => {
+                if (topLoading) return;
+                return <View style={cpSty.emptyListMSG_cSty} >
+                    <TextX text={str.RECORDS_NOT_FOUND} tSty={cpSty.emptyListMSG_tSty} />
+                </View>
+            }}
         />
         <PressX
-            onPress={() => navigation.navigate("AddFriendScr")}
+            onPress={() => navigation.navigate("AddEditTaskScr")}
             children={<PLUSH_IC color={col.WHITE} />}
             mSty={sty.addExpenseBtn_mSty}
             cSty={sty.addExpenseBtn_cSty} />

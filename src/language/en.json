@@ -22,5 +22,11 @@
     "INCOMPLETED": "Incompleted",
     "TASK_DETAILS": "Task Details",
     "EDITE": "Edite",
-    "DELETE": "Delete"
+    "DELETE": "Delete",
+    "CANCEL": "Cancel",
+    "REMOVE": "Remove",
+    "RECORDS_NOT_FOUND": "Records not found....!",
+    "NO_RESULTS_FOUND": "No results found!",
+    "DELETE_TASK": "Remove Task",
+    "ARE_YOU_SURE_REMOVE_TASK": "Are you sure? you want to delete task!!!",
 }
