@@ -1,37 +1,29 @@
 import React, { memo } from 'react'
-import { PressXType } from 'Types'
-import { useThemeX } from 'hooks'
-import { Size } from 'functions'
+import { PressXType } from '../../Types'
+import { useThemeX } from '../../hooks'
+import { Size } from '../../functions'
 import PressXCompo from './PressXCompo'
-import { BtnHeight } from 'utils'
+import { btnRadius } from '../../utils'
 
-/**
- * Custom Button Component
- */
 const ButtonXCompo = (porps: PressXType & { transparent?: boolean }) => {
     const { transparent } = porps;
     const { col, font } = useThemeX();
     return (<PressXCompo
-        h={BtnHeight}
+        // h={55}
         f={1}
-        bR={10}
-        pStyIdx={1}
-        jfy='center'
-        aItem='center'
-        bCol={col.PRIMARY}
-        bgCol={transparent ? col?.TRANSPARENT : col.PRIMARY}
-        {...porps}
+        radius={btnRadius}
+        alignI='center'
+        justify='center'
+        bgCol={transparent ? col?.TRANSPARENT : col.BTN_BGCOL}
         tSty={{
-            color: transparent ? col.WHITE : col.WHITE,
+            color: transparent ? col.BTN_BGCOL : col.BTN_TEXT_COL,
             fontFamily: font.BOLD,
-            textTransform: 'uppercase',
-            fontSize: Size(20),
-            ...porps?.tSty
+            fontSize: Size(15),
         }}
-        cSty={{ borderWidth: 1 }}
-        // mSty={{ height: 56, ...porps?.mSty }}
-        mSty={{ height: porps?.h || BtnHeight, ...porps?.mSty }}
+        {...porps}
+        cSty={{ borderWidth: 1, borderColor: col.BTN_BGCOL, ...porps?.cSty }}
+        mSty={{ height: 55, flex: 1, ...porps?.mSty }}
     />)
 }
 
-export default memo(ButtonXCompo)
+export default memo(ButtonXCompo);

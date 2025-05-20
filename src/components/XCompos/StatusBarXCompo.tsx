@@ -1,9 +1,9 @@
 import { StatusBar, SafeAreaView } from 'react-native'
 import React, { Fragment, memo } from 'react'
-import { useThemeX } from 'hooks';
-import { StatusBarType } from 'Types';
+import { useThemeX } from '../../hooks';
+import { statusBarType } from '../../types';
 
-const StatusBarXCompo = ({ sbShow = true, sbColor, barStyle = 'light-content', sbTransition }: StatusBarType) => {
+const StatusBarXCompo = ({ sbShow = true, sbColor, barStyle = 'light-content', sbTransition }: statusBarType) => {
     const { top, col } = useThemeX();
     return (
         <Fragment>
@@ -13,7 +13,7 @@ const StatusBarXCompo = ({ sbShow = true, sbColor, barStyle = 'light-content', s
                 barStyle={barStyle}
                 backgroundColor={col.TRANSPARENT}
                 showHideTransition={sbTransition ?? 'fade'} />
-            {sbShow && <SafeAreaView style={{ height: top, backgroundColor: sbColor ?? col.TRANSPARENT, zIndex: 10 }} />}
+            {sbShow && <SafeAreaView style={{ height: top, backgroundColor: sbColor ?? col.TRANSPARENT }} />}
         </Fragment>
     )
 }

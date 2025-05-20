@@ -1,13 +1,13 @@
-import { StyleSheet, TextInput } from 'react-native'
+import { StyleSheet, TextInput, View } from 'react-native'
 import React from 'react'
-import { useThemeX } from 'hooks';
-import { TextInputXType, defStyType } from 'Types';
-import { Size, defStyFN } from 'functions';
-import ViewXCompo from './ViewXCompo';
+import { useThemeX } from '../../hooks';
+import { TextInputXType, defStyObjType } from '../../Types';
+import { Size } from '../../functions';
 import PressXCompo from './PressXCompo';
 import TextXCompo from './TextXCompo';
 import Animated from 'react-native-reanimated';
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
+// import { BottomSheetTextInput } from '@gorhom/bottom-sheet';
+import { isANDROID } from '../../utils';
 
 const TextInputXCompo = ({
     onBlur, reff, phNm, text, lines, onChangeT, onSubEdit, rKeyType, kbType,
@@ -20,20 +20,21 @@ const TextInputXCompo = ({
     lBtn, lBtn_text, lBtn_tSty, lBtn_mSty, lBtn_cSty, lBtnDis, lBtnPress, lBtn_loader,
     rBtn, rBtn_text, rBtn_tSty, rBtn_mSty, rBtn_cSty, rBtnDis, rBtnPress, rBtn_loader,
     inputBox, autoCapitalize = 'none', lBtnNode, rBtnNode, onBoxLayout,
-    ...defStyObj
 }: TextInputXType) => {
 
-    const { col, font, cpSty } = useThemeX();
-    const sty = styFN(useThemeX()?.defStyObj);
+    const { col, font, cpSty, defStyOBJ } = useThemeX();
+    const sty = styFN(defStyOBJ);
 
     const textSty: any = inputSty;
 
-    return (
-        <Animated.View style={[defStyFN(defStyObj), sty.container, defStyObj?.style]} onLayout={onBoxLayout} >
-            {topSvg && topSvg}
-            <ViewXCompo f={1} fD='row' >
+    const BottomSheetTextInput: any = <></>;
 
-                <ViewXCompo f={1} >
+    return (
+        <Animated.View style={[sty.container]} onLayout={onBoxLayout} >
+            {topSvg && topSvg}
+            <View style={{ flexDirection: 'row' }}>
+
+                <View style={{ flex: 1 }}>
 
                     {labelNM && <Animated.View style={[sty.lable_Container, lbl_cSty]} >
                         {lbl_LSvg && lbl_LSvg}
@@ -45,9 +46,9 @@ const TextInputXCompo = ({
                         {lbl_RSvg && lbl_RSvg}
                     </Animated.View>}
 
-                    <ViewXCompo style={[sty.mSty, mSty]}>
+                    <View style={[sty.mSty, mSty]}>
                         {lBtnNode && lBtnNode}
-                        {/* {lBtn && <ViewXCompo children={lBtn} style={sty.lBtn} />} */}
+                        {/* {lBtn && <View children={lBtn} style={sty.lBtn} />} */}
                         {(lBtn || lBtn_text || lBtn_loader) && <PressXCompo
                             children={lBtn}
                             disabled={lBtnDis}
@@ -66,7 +67,7 @@ const TextInputXCompo = ({
                                 text={(!text || text?.length === 0) ? phNm : text}
                                 tSty={{
                                     ...cpSty.inputSty1,
-                                    color: (!text || text?.length === 0) ? col.BLACK02 : cpSty.inputSty1?.color,
+                                    color: (!text || text?.length === 0) ? col.INPUT_TEXT_PH_COL : cpSty.inputSty1?.color,
                                     ...textSty,
                                 }}
                             />)
@@ -77,7 +78,7 @@ const TextInputXCompo = ({
                                         ref={reff}
                                         value={text}
                                         onChangeText={onChangeT}
-                                        placeholderTextColor={col.BLACK02}
+                                        placeholderTextColor={col.INPUT_TEXT_PH_COL}
                                         placeholder={phNm}
                                         allowFontScaling={false}
                                         blurOnSubmit={rKeyType === 'done' ? true : false}
@@ -113,7 +114,7 @@ const TextInputXCompo = ({
                                         ref={reff}
                                         value={text}
                                         onChangeText={onChangeT}
-                                        placeholderTextColor={col.BLACK02}
+                                        placeholderTextColor={col.INPUT_TEXT_PH_COL}
                                         placeholder={phNm}
                                         allowFontScaling={false}
                                         blurOnSubmit={rKeyType === 'done' ? true : false}
@@ -122,6 +123,8 @@ const TextInputXCompo = ({
                                         returnKeyType={rKeyType}
                                         onBlur={onBlur}
                                         keyboardType={kbType}
+                                        // textBreakStrategy='highQuality'
+                                        // lineBreakStrategyIOS='standard'
                                         autoCorrect={autoCorrect}
                                         autoCapitalize={autoCapitalize}
                                         autoComplete={autoComplete}
@@ -134,26 +137,23 @@ const TextInputXCompo = ({
                                         readOnly={readOnly}
                                         maxLength={maxLength}
                                         style={[
-                                            // sty.inputSty,
                                             cpSty.inputSty1,
                                             {
-                                                // textAlignVertical: multiline ? 'top' : undefined,
-                                                verticalAlign: multiline ? 'top' : undefined,
-                                                // textAlignVertical: multiline ? 'bottom' : undefined,
-                                                // verticalAlign: multiline ? 'bottom' : undefined,
+                                                verticalAlign: (multiline && isANDROID) ? 'top' : undefined,
+                                                flex: 1,
                                             },
                                             inputSty]}
                                         editable={editable}
                                     />))}
-                        {/* {ip_LSvg && <ViewXCompo style={sty.rBtn} >{rBtn}</ViewXCompo>} */}
+                        {/* {ip_LSvg && <View style={sty.rBtn} >{rBtn}</View>} */}
                         {ip_LSvg && <PressXCompo
                             children={ip_LSvg}
                             disabled={rBtnDis}
                             onPress={rBtnPress}
                             cSty={sty.rBtn_cSty} />}
                         {rBtnNode && rBtnNode}
-                    </ViewXCompo>
-                </ViewXCompo>
+                    </View>
+                </View>
                 {(rBtn || rBtn_text || rBtn_loader) && <PressXCompo
                     children={rBtn}
                     disabled={rBtnDis}
@@ -166,22 +166,22 @@ const TextInputXCompo = ({
                     text={rBtn_text}
                     pStyIdx={2}
                 />}
-            </ViewXCompo>
+            </View>
             {bottomSvg && bottomSvg}
         </Animated.View>)
 }
 
 export default React.memo(TextInputXCompo);
 
-const styFN = ({ col, font }: defStyType) => StyleSheet.create({
+const styFN = ({ col, font }: defStyObjType) => StyleSheet.create({
 
     container: {
         borderWidth: 1,
         borderRadius: 10,
-        borderColor: col.BLACK02,
+        borderColor: col.INPUT_TEXT_OUTLINE,
         paddingHorizontal: 15,
         paddingVertical: 7,
-        backgroundColor: col.D_WHITE,
+        backgroundColor: col.INPUT_BG,
         // paddingTop: 10,
         marginBottom: 10,
         // flexDirection: 'column'
@@ -194,26 +194,14 @@ const styFN = ({ col, font }: defStyType) => StyleSheet.create({
     lable_tSty: {
         fontFamily: font.REGULAR,
         fontSize: Size(14),
-        color: col.PLATINUM_GREY,
+        color: col.INPUT_TEXT_LABLE_COL,
         fontWeight: '400',
-    },
-    inputSty: {
-        flex: 1,
-        fontSize: Size(18),
-        color: col.D_BLACK,
-        fontFamily: font.REGULAR,
-        // dont increase padding,
-        // if you remove then padding is incrase i android
-        padding: 0
-        // fontWeight: '500',
-        // textAlignVertical: 'bottom',
-        // verticalAlign: 'bottom',
-        // backgroundColor: 'red'
     },
 
     mSty: {
         width: "100%",
         flexDirection: 'row',
+        height: 40,
     },
 
     lBtn: {

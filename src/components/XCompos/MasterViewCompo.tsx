@@ -1,102 +1,65 @@
-import { KeyboardAvoidingView, SafeAreaView, View, } from 'react-native'
+import { SafeAreaView, View, } from 'react-native'
 import React, { memo } from 'react'
-import { ScrollView as ScrollViewG } from 'react-native-gesture-handler';
+import { ScrollView, ScrollView as ScrollViewG } from 'react-native-gesture-handler';
 import HeaderXCompo from './HeaderXCompo';
-import { useThemeX } from 'hooks';
-import { MasterViewType } from 'Types';
-import ViewXCompo from './ViewXCompo';
-import { defStyFN } from 'functions';
-import { kAvoidSty } from 'utils';
-import Animated from 'react-native-reanimated';
-import AlertBoxCompo from 'components/AlertBoxCompo';
-import ScrLoaderCompo from 'components/ScrLoaderCompo';
+import { useThemeX } from '../../hooks';
+import { MasterViewType } from '../../types';
+import ToastAlertCompo from './ToastAlertCompo';
+import ScrLoaderCompo from './ScrLoaderCompo';
 
-/**
- * Master View
- * its can handle default view of device like 
- * top navigation bar, bottom tab navigation bar, header
- * its can handle screen default view is scrollable or fixed.
- * screen contents
- * any many more...
- */
 const MasterViewCompo = ({
-    fixed = false, gScroll = false,
-    style, bgCol, bgCol2, scrollViewRef,
-    header, bottomBarColor,
-    autoAdujKeyInsets, bounces, onScroll, keyboardShouldPersistTaps = 'always',
-    modals, bSvg, tSvg, bgImgUri, bgImgSource, scrollEnabled,
-
-    /** header props */
-    title, titleCompo, bPress, backBtn = true, lSvg, rSvg, tSty, hHeight, hBgColor,
-    alignText = 'center', lHeight, rHeight, hShow = true, hMSty,
-    barStyle, sbColor, sbShow = true, sbTransition, hShadow,
-    backBtnType, hBtnColor, appIcon, abScrLoader, abLoader, toast, setToast,
-    scrLoader,
-
-    alert, setAlert,
-    children, w = "100%", f, ...defStyObj
-
+    children, fixed = false, gScroll = false,
+    style, bgCol, bgCol2, header, bottomBarColor, autoAdujKeyInsets, modals, bSvg, tSvg,
+    alignText = 'center', lHeight, rHeight, hShow = true, barStyle, sbColor, sbShow = true, sbTransition,
+    keyboardShouldPersistTaps, setToast, toast, topNODE, btmNODE, abScrLoader, abLoader, scrLoader,
+    title, bPress, backBtn = true, lSvg, rSvg, tSty, hHeight, hBgColor,
 }: MasterViewType) => {
 
     const { col, bottom } = useThemeX();
 
     const headerProps = {
         title, bPress, backBtn, lSvg, rSvg, tSty, hHeight, hBgColor, alignText, lHeight, rHeight, hShow,
-        barStyle, sbColor, sbShow, sbTransition, hShadow, backBtnType, hMSty, hBtnColor, appIcon, titleCompo
-    }
+        barStyle, sbColor, sbShow, sbTransition
+    };
 
     return (
-        <View style={{ backgroundColor: bgCol ? bgCol : col.D_WHITE, flex: 1 }}>
+        <View style={{ backgroundColor: bgCol ? bgCol : col.SCR_BGCOL, flex: 1 }}>
             {(header ? header : <HeaderXCompo {...headerProps} />)}
-            <KeyboardAvoidingView behavior={kAvoidSty}
-                style={{ flex: 1, backgroundColor: bgCol2 ? bgCol2 : bgCol, overflow: 'hidden' }}>
-                {scrLoader ? <ScrLoaderCompo loading={scrLoader} />
-                    : (<>
-                        {tSvg && tSvg}
-                        {fixed ? (<ViewXCompo {...defStyObj} w={w} f={1} children={children} />)
-                            : gScroll ? (
-                                <ScrollViewG
-                                    ref={scrollViewRef}
-                                    bounces={bounces}
-                                    onScroll={onScroll}
-                                    nestedScrollEnabled={true}
-                                    showsVerticalScrollIndicator={false}
-                                    scrollEnabled={scrollEnabled}
-                                    automaticallyAdjustKeyboardInsets={autoAdujKeyInsets}
-                                    style={{ flex: 1, backgroundColor: bgCol, }}
-                                    keyboardShouldPersistTaps={keyboardShouldPersistTaps}
-                                    contentContainerStyle={[
-                                        defStyFN(defStyObj),
-                                        { width: w },
-                                        style]}>{children}</ScrollViewG>)
-                                : (<Animated.ScrollView
-                                    ref={scrollViewRef}
-                                    bounces={bounces}
-                                    onScroll={onScroll}
-                                    scrollEnabled={scrollEnabled}
-                                    nestedScrollEnabled={true}
-                                    showsVerticalScrollIndicator={false}
-                                    automaticallyAdjustKeyboardInsets={autoAdujKeyInsets}
-                                    style={{ flex: 1, backgroundColor: bgCol, }}
-                                    keyboardShouldPersistTaps={keyboardShouldPersistTaps}
-                                    contentContainerStyle={[
-                                        defStyFN(defStyObj),
-                                        { width: w, flexGrow: 1, overflow: 'hidden' },
-                                        style]}>{children}</Animated.ScrollView>)}
-                        {bSvg && bSvg}
-                        <ScrLoaderCompo loading={abLoader} absolute />
-                    </>)
+            <View style={{ flex: 1, backgroundColor: bgCol2 ? bgCol2 : bgCol }}>
+                {tSvg && tSvg}
+                {
+                    fixed ? (
+                        <View style={{ flex: 1 }} >
+                            {children}
+                        </View>
+                    ) : gScroll ? (
+                        <ScrollViewG
+                            nestedScrollEnabled={true}
+                            showsVerticalScrollIndicator={false}
+                            automaticallyAdjustKeyboardInsets={autoAdujKeyInsets}
+                            keyboardShouldPersistTaps={keyboardShouldPersistTaps}
+                            style={{ flex: 1, backgroundColor: bgCol, }}
+                            contentContainerStyle={[style]}
+                        >{children}</ScrollViewG>
+                    ) : (<ScrollView
+                        nestedScrollEnabled={true}
+                        showsVerticalScrollIndicator={false}
+                        automaticallyAdjustKeyboardInsets={autoAdujKeyInsets}
+                        keyboardShouldPersistTaps={keyboardShouldPersistTaps}
+                        style={{ flex: 1, backgroundColor: bgCol, }}
+                        contentContainerStyle={[style]}
+                    >{children}</ScrollView>)
                 }
-            </KeyboardAvoidingView>
-            {
-                (bottomBarColor) && <SafeAreaView
-                    style={{ backgroundColor: bottomBarColor ? bottomBarColor : 'black', height: bottom }}
-                />
-            }
+                {bSvg && bSvg}
+            </View>
+            {(bottomBarColor) && <SafeAreaView
+                style={{ backgroundColor: bottomBarColor ? bottomBarColor : 'black', height: bottom }}
+            />}
             {modals && modals}
             <ScrLoaderCompo loading={abScrLoader} absolute />
-            <AlertBoxCompo {...toast} setToast={setToast} />
-        </View >
+            <SafeAreaView style={{ backgroundColor: col.TRANSPARENT, height: bottom }} />
+            <ToastAlertCompo {...toast} setToast={setToast} />
+        </View>
     );
 }
 

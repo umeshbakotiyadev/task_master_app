@@ -1,8 +1,8 @@
 import { create } from 'zustand';
-import zuStandStorage from './zuStandStorage';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { zuStandStoreOBJType } from '../types';
 import { zuStandStoreOBJ } from '../utils';
+import zuStandStorage from './zustandStorage';
 
 /**
 * Local Storage,
@@ -11,7 +11,6 @@ import { zuStandStoreOBJ } from '../utils';
 const useZuStore = create<zuStandStoreOBJType>()(
     persist((set) => ({
         ...zuStandStoreOBJ,
-
     }), {
         "name": '@AppForStore',
         "storage": createJSONStorage(() => zuStandStorage),

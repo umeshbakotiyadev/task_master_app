@@ -1,30 +1,24 @@
-import { View, StyleSheet, Image, } from 'react-native'
+import { View } from 'react-native'
 import React, { memo, useMemo, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
-import { defStyType, HeaderType } from 'Types';
+import { headerType } from '../../types';
 import PressXCompo from './PressXCompo';
 import StatusBarXCompo from './StatusBarXCompo';
+import { headerHeight } from '../../utils';
+import { useThemeX } from '../../hooks';
 import TextXCompo from './TextXCompo';
-import { Size } from 'functions';
-import { bSpace, headerHeight } from 'utils';
-import { useThemeX } from 'hooks';
-import ViewXCompo from './ViewXCompo';
-import { BACK_IC } from 'assets/svgs';
-import { APP_LOGO_IMG } from 'assets';
+import { BACK_IC } from '../../assets';
+import Animated from 'react-native-reanimated';
 
-/**
- * Custom Header Component
- */
 const HeaderXCompo = ({
     title, bPress, backBtn = true, lSvg, rSvg, tSty, hHeight, hBgColor,
-    alignText = 'center', lHeight, rHeight, hShow, hMSty, hBtnColor,
-    barStyle = 'light-content', sbColor, sbShow, sbTransition, appIcon,
-    titleCompo,
-}: HeaderType) => {
+    alignText = 'center', lHeight, rHeight, hShow = true,
+    barStyle, sbColor, sbShow, sbTransition, bIcBgCol, bIcCol, hTextCol, hTextBgCol,
+}: headerType) => {
 
     const navigation = useNavigation();
-    const sty = styleFN(useThemeX().defStyObj);
-    const { col, cpSty } = useThemeX();
+
+    const { col, hdSty } = useThemeX();
 
     const [lH, setLH] = useState<number>(lHeight ?? 0);
     const [rH, setRH] = useState<number>(rHeight ?? 0);
@@ -42,45 +36,49 @@ const HeaderXCompo = ({
         }
         return 0;
     }, [lH, rH]);
-    // var { x, y, width, height } = event.nativeEvent.layout;
 
     return (
-        <ViewXCompo style={hMSty} >
-            <StatusBarXCompo barStyle={barStyle} sbColor={sbColor ?? col.HEADER_BG} sbShow={sbShow} sbTransition={sbTransition} />
-            {hShow && (<View style={[sty.mainSty, {
-                backgroundColor: hBgColor ?? col.HEADER_BG, height: hHeight ?? headerHeight, width: "100%"
-            }]}>
-                <View onLayout={(event) => { setLH(event.nativeEvent.layout.width) }} style={{ justifyContent: 'center', }} >
+        <>
+            <StatusBarXCompo
+                barStyle={barStyle ?? 'default'}
+                sbColor={sbColor ?? col.SB_COL}
+                sbTransition={sbTransition ?? 'fade'}
+                sbShow={sbShow}
+            />
+            {hShow && (<Animated.View
+                style={[
+                    hdSty.mainSty, { height: hHeight ?? headerHeight },
+                    hdSty?.hSty, { backgroundColor: hBgColor || hdSty?.hSty?.backgroundColor }]}>
+                <View onLayout={(event) => { setLH(event.nativeEvent.layout.width) }} >
                     {backBtn && (<PressXCompo
-                        cSty={cpSty.headerBtn_cSty}
-                        mSty={cpSty.headerBtn_mSty}
-                        children={<BACK_IC color={hBtnColor} />}
+                        children={<BACK_IC color={bIcCol ?? col.HEADER_SVG_COL} />}
                         onPress={bPress ? bPress : () => navigation.goBack()}
+                        cSty={{ ...hdSty.hBtnCSty, backgroundColor: bIcBgCol ?? col.HEADER_SVG_BGCOL }}
+                        mSty={hdSty.hBtnMSty}
                     />)}
                     {lSvg}</View>
-                <View style={[sty.textView, { marginLeft: lM, marginRight: rM, alignItems: alignText, }]} >
-                    {appIcon && <Image
-                        source={APP_LOGO_IMG}
-                        style={{ height: "100%", aspectRatio: 1, }}
-                        resizeMode='contain' />}
-                    {titleCompo ? titleCompo : (title ? <TextXCompo tSty={{ ...tSty, ...cpSty.header_title_tSty }} >{title ?? ""}</TextXCompo> : "")}
+                <View style={[
+                    hdSty.textView,
+                    {
+                        marginLeft: lM,
+                        marginRight: rM,
+                        alignItems: alignText,
+                    }
+                ]} >
+                    <TextXCompo tSty={{
+                        ...tSty, ...hdSty?.textSty,
+                        borderRadius: 10,
+                        paddingVertical: 3,
+                        paddingHorizontal: 5,
+                        backgroundColor: hTextBgCol,
+                        color: hTextCol ?? hdSty?.textSty?.color,
+                    }}
+                    >{title ?? ""}</TextXCompo>
                 </View>
-                <View onLayout={(event) => { setRH(event.nativeEvent.layout.width) }}>{rSvg}</View>
-            </View>)}
-        </ViewXCompo>)
+                <View onLayout={(event) => { setRH(event.nativeEvent.layout.width) }} >{rSvg}</View>
+            </Animated.View>)}
+        </>
+    )
 }
 
 export default memo(HeaderXCompo);
-
-const styleFN = ({ col, font }: defStyType) => StyleSheet.create({
-    mainSty: {
-        flexDirection: 'row',
-        width: '100%',
-        paddingHorizontal: bSpace / 2,
-        alignItems: 'center',
-    },
-    textView: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-})

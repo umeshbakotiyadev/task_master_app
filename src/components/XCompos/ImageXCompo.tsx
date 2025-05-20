@@ -1,59 +1,63 @@
-import { ImageBackground, ImageSourcePropType, ActivityIndicator, } from 'react-native'
-import React, { useState } from 'react'
-import FastImage, { ResizeMode, Source } from 'react-native-fast-image'
-import Animated from 'react-native-reanimated';
-import { isUrl } from 'functions';
-import { ViewXType } from 'Types';
-import ViewXCompo from './ViewXCompo';
-import { useThemeX } from 'hooks';
+import React, { useCallback, useState } from 'react'
+import FastImage, { FastImageProps } from 'react-native-fast-image';
+import { DEF1S_IMG } from '../../assets/images';
+import { ImageBackground, ImageStyle, StyleProp } from 'react-native';
+import { isValidUrl, regex } from '../../functions';
 
-interface P {
-    source?: Source;
-    defImgSrc?: ImageSourcePropType;
-    defImgUri?: string;
-    uri?: string | undefined;
-    isLoader?: boolean;
-    resizeMode?: ResizeMode;
+interface Props extends FastImageProps {
+    img: string | any;
+    imgSty?: ImageStyle | StyleProp<any>;
+    defIMG?: any;
+    noDefImg?: boolean;
+    imgProps?: FastImageProps;
+    sharedTransitionTag?: string;
 }
 
-//! NOTE : padding not allowed in style,
-const ImageXCompo = ({ source = undefined, uri, defImgSrc, defImgUri, resizeMode = 'cover', isLoader = false, ...defStyObj }: P & ViewXType) => {
+const ImageXCompo = ({ sharedTransitionTag, img, noDefImg, defIMG = DEF1S_IMG, imgSty, ...imgProps }: Props) => {
 
-    const { col } = useThemeX();
+    const placeholder_image_base64 = undefined, placeholder_image = undefined;
+    const imgUriSource = img && typeof img === 'string' ? img : "";
 
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [shERR, setShERR] = useState<boolean | null>(null);
+    const [imgERR, setImgERR] = useState<boolean | null>(null);
 
-    return (
-        <ViewXCompo {...defStyObj} oFlow='hidden'>
-            {(defImgSrc || defImgUri) ? (<ImageBackground
-                source={defImgUri ? { uri: defImgUri } : defImgSrc ?? { uri: "" }}
-                resizeMode='contain' >
-                <FastImage
-                    source={source ? source : { uri: isUrl(uri ?? "") ? uri : "" }}
-                    onLoadEnd={() => { isLoader && setIsLoading(false) }}
-                    onError={() => { isLoader && setIsLoading(false) }}
-                    style={{ height: "100%", width: "100%" }}
-                    resizeMode={resizeMode}
-                />
-                {(isLoader && isLoading) &&
-                    <Animated.View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', height: "100%", width: "100%" }}>
-                        <ActivityIndicator size={'small'} color={col.PRIMARY} />
-                    </Animated.View>
-                }
+    const Image = useCallback(() => {
+        return (<FastImage
+            source={{ uri: img, cache: 'immutable' }}
+            style={{
+                width: "100%", height: "100%",
+                // backgroundColor: (imgERR == null || imgERR == true) ? undefined : col.WHITE,
+                ...imgSty,
+            }}
+            onError={() => { setImgERR(true); }}
+            onLoadEnd={() => { !imgERR && setImgERR(false); }}
+            {...imgProps}
+        />);
+    }, [imgUriSource, img, imgERR, shERR, placeholder_image_base64,
+        placeholder_image, imgProps, imgSty]);
+
+    return (<ImageBackground
+        source={(noDefImg || placeholder_image_base64 || placeholder_image) ? undefined : defIMG}
+        style={{ width: "100%", height: "100%", ...imgSty }}>
+        {((regex.seRMV(placeholder_image_base64 || placeholder_image || "")?.length > 0) && !(!!shERR))
+            ? (<ImageBackground
+                resizeMode='contain'
+                source={{
+                    cache: 'force-cache',
+                    uri: imgERR == false ? undefined : (placeholder_image_base64 || placeholder_image || ""),
+                }}
+                onError={() => { setShERR(true); }}
+                onLoadEnd={() => { !shERR && setShERR(false); }}
+                style={{
+                    width: "100%", height: "100%",
+                    // backgroundColor: (shERR == null || shERR) ? undefined : 'white',
+                    ...imgSty
+                }}>
+                {isValidUrl(imgUriSource) && Image()}
             </ImageBackground>)
-                : (<>
-                    <FastImage
-                        source={source ? source : { uri: isUrl(uri ?? "") ? uri : "" }}
-                        onLoadEnd={() => { isLoader && setIsLoading(false) }}
-                        onError={() => { isLoader && setIsLoading(false) }}
-                        style={{ height: "100%", width: "100%" }}
-                        resizeMode={resizeMode}
-                    />
-                    {(isLoader && isLoading) && (<Animated.View style={{ position: 'absolute', alignItems: 'center', justifyContent: 'center', height: "100%", width: "100%" }}>
-                        <ActivityIndicator size={'small'} color={col.PRIMARY} />
-                    </Animated.View>)}
-                </>)}
-        </ViewXCompo>)
+            : (isValidUrl(imgUriSource) && Image())
+        }
+    </ImageBackground>);
 }
 
-export default ImageXCompo
+export default React.memo(ImageXCompo);

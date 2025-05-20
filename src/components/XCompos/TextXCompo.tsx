@@ -1,14 +1,14 @@
 import { TextProps } from 'react-native'
 import React, { memo } from 'react'
-import Animated, { AnimateProps } from 'react-native-reanimated';
-import { useThemeX } from 'hooks';
-import { Size, defStyFN } from 'functions';
-import { TextXType } from 'Types';
+import Animated from 'react-native-reanimated';
+import { useThemeX } from '../../hooks';
+import { Size } from '../../functions';
+import { TextXType } from '../../Types';
 
-const TextXCompo = ({ text = "", children, tSty, lChild, rChild,
+const TextXCompo = ({
+    text = "", children, tSty, lChild, rChild,
     fColor, fFamily, fSize, tAlign, lines, autofit, onPress,
     entering, exiting, onLayout,
-    ...defStyObj
 }: TextXType) => {
     const { col, font } = useThemeX();
     return (
@@ -19,7 +19,6 @@ const TextXCompo = ({ text = "", children, tSty, lChild, rChild,
                 fontSize: fSize ? Size(fSize) : Size(14),
                 textAlign: tAlign,
             },
-            defStyFN(defStyObj),
             tSty,
             { includeFontPadding: false }
         ]}
