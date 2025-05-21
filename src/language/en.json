@@ -36,5 +36,10 @@
     "DESCRIPTION": "Description",
     "DUE_DATE": "Due Date",
     "DUE_DATE_REQUIRED": "Due Date Required!!!",
-    "TASK_TITLE_REQUIRED": "Task Title Required!!!"
+    "TASK_TITLE_REQUIRED": "Task Title Required!!!",
+    "DOWNLOAD": "Download",
+    "OFFLINE_VIDEOS": "Offline Videos",
+    "DOWNLOADING": "Downloading...",
+    "PLAY": "Play",
+    "YOUR_INTERNET_CONNCTIONS_IS_NOT_CONNECTED": "Your device is not connected with internet!!"
 }

@@ -13,11 +13,13 @@ import { AndroidPermission, IOSPermission } from "react-native-permissions";
 
 type zuStandInitStoreType = {
     taskListData: taskListDataOBJType;
+    videoListData: videoItemOBJType;
 }
 
 type setZuStandInitStoreType = {
     setTaskListData: (by: taskListDataOBJType) => void;
     setResetTaskListData: (by: taskListDataOBJType) => void;
+    setVideoListData: (by: videoItemOBJType) => void;
 }
 
 type zuStandStoreOBJType = zuStandInitStoreType & setZuStandInitStoreType;
@@ -28,7 +30,6 @@ type ApiCallType = {
     endPath?: string;
     body?: any | FormData;
     token?: string;
-    shopifyXToken?: string;
     urlencoded?: boolean;
     isFormData?: boolean;
     multipart?: boolean;
@@ -316,6 +317,19 @@ type taskListDataType = {
 
 type taskListDataOBJType = { [key: string]: taskListDataType };
 
+type videoItemType = {
+    id?: string;
+    quality?: string;
+    file_type?: "video/mp4" | string;
+    width?: number;
+    height?: number;
+    fps?: number;
+    link?: string;
+    size?: number;
+    offlineSourceLink?: string;
+}
+
+type videoItemOBJType = { [key: string]: videoItemType };
 
 export type {
     setZuStandInitStoreType, zuStandInitStoreType, zuStandStoreOBJType,
@@ -323,5 +337,5 @@ export type {
     defStyObjType, headerType, statusBarType, MasterViewType, ToastType,
     TextInputXType, TextXType, StackProps, getImageMetaDataType,
     checkPermissionType, PermissionResultType, permissionsType, rationaleType,
-    taskListDataType, taskListDataOBJType
+    taskListDataType, taskListDataOBJType, videoItemOBJType, videoItemType
 }

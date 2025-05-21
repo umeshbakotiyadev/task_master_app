@@ -9,8 +9,11 @@ import ButtonX from "./XCompos/ButtonXCompo";
 import ScrLoader from "./XCompos/ScrLoaderCompo";
 import TaskDetailsCardItem from "./TaskDetailsCardItemCompo";
 import SwitchX from "./XCompos/SwitchXCompo";
+import VideoX from "./XCompos/VideoXCompo";
+import VideoItem from "./VideoItemCompo";
 
 export {
     PressX, MasterView, HeaderX, StatusBarX, TextX, TextInputX, ButtonX,
-    ScrLoader, ToastAlert, TaskDetailsCardItem, SwitchX
+    ScrLoader, ToastAlert, TaskDetailsCardItem, SwitchX, VideoX, VideoItem,
+
 }

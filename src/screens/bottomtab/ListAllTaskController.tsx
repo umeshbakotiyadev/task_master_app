@@ -1,4 +1,4 @@
-import { View, StyleSheet, RefreshControl, FlatList } from 'react-native'
+import { View, StyleSheet, RefreshControl, FlatList, Alert } from 'react-native'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ButtonX, MasterView, PressX, TaskDetailsCardItem, TextX } from '../../components'
 import { useAPIs, useThemeX } from '../../hooks'
@@ -12,7 +12,7 @@ const ListAllTaskController = ({ navigation }: any) => {
 
     const { getUserDetailsAPI } = useAPIs();
     const { setTaskListData, taskListData } = useZuStore();
-    const { top, col, str, defStyOBJ, cpSty } = useThemeX();
+    const { top, col, str, defStyOBJ, cpSty, setToast } = useThemeX();
     const sty = styFN(defStyOBJ);
 
     const [topLoading, setTopLoading] = useState<boolean>(false);
@@ -42,7 +42,8 @@ const ListAllTaskController = ({ navigation }: any) => {
                 setTaskListData(makeTaskListDataForLocalStoreFN(res));
             }
             setBottomLoading(false); setTopLoading(false);
-        }).finally(() => {
+        }).catch(() => {
+            setToast({ show: true, msg: str.SOMETHING_ITS_WRONG_PLZ_TRY_AGAIN });
             setBottomLoading(false); setTopLoading(false);
         });
     }
@@ -57,11 +58,10 @@ const ListAllTaskController = ({ navigation }: any) => {
         getUserDetails({ topRefresh: true });
     }, []);
 
-    return (<MasterView fixed header={<></>} >
+    return (<MasterView fixed hShow={false} >
         <FlatList
             data={usersDataArr}
             ListHeaderComponent={<>
-                <View style={{ height: top, backgroundColor: col.TRANSPARENT }} />
                 {(usersDataArr.length > 0) && <View style={{ flexDirection: 'row', height: 20 + btnHeight, paddingBottom: 10 }} >
                     <ButtonX
                         text={str.ALL}

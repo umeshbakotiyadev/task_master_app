@@ -13,11 +13,13 @@ const useZuStore = create<zuStandStoreOBJType>()(
         ...zuStandStoreOBJ,
         setTaskListData: by => set((state) => ({ taskListData: { ...state?.taskListData, ...by } })),
         setResetTaskListData: by => set((state) => ({ taskListData: by })),
+        setVideoListData: by => set((state) => ({ videoListData: { ...state?.videoListData, ...by } })),
     }), {
         "name": '@AppForStore',
         "storage": createJSONStorage(() => zuStandStorage),
         partialize: (state) => <zuStandStoreOBJType>({
             ...state,
+            videoListData: {}
         }),
         onRehydrateStorage: (_/* state */) => {
             return async (state, error) => {

@@ -15,20 +15,15 @@ const useAPIsHook = () => {
   const { abort, signal } = new AbortController();
   const { } = useZuStore();
 
-  const headR = (token?: string, urlencoded?: boolean, multipart?: boolean, shopifyXToken?: string) => {
+  const headR = (token?: string, urlencoded?: boolean, multipart?: boolean) => {
 
     var Header = new Headers();
-    token && Header.append("Authorization", `Bearer ${token}`);
+    // token && Header.append("Authorization", `Bearer ${token}`);
+    token && Header.append("Authorization", `${token}`);
     // Header.append("Accept", "application/json");
 
     if (multipart) Header.append("Content-Type", "multipart/form-data");
     else Header.append("Content-Type", urlencoded ? "application/x-www-form-urlencoded" : "application/json");
-
-    if (shopifyXToken) {
-      Header.append("Content-Type", "application/json");
-      Header.append("Accept-Language", "en");
-      Header.append("X-Shopify-Storefront-Access-Token", shopifyXToken);
-    }
     return Header;
   };
 
@@ -43,7 +38,7 @@ const useAPIsHook = () => {
    * Todo return response is as a Object.
    */
   async function fetchREQ({ endPath, body, toText, token, method = 'POST', urlencoded = false, params,
-    multipart, apiURI, shopifyXToken }: ApiCallType): Promise<ApiResType> {
+    multipart, apiURI }: ApiCallType): Promise<ApiResType> {
 
     const url = ((apiURI || "") + (endPath || "")) + (params ? `${'?' + params}` : '');
 
@@ -51,7 +46,7 @@ const useAPIsHook = () => {
 
       let raw = {
         method: method,
-        headers: headR(token, urlencoded, multipart, shopifyXToken),
+        headers: headR(token, urlencoded, multipart),
         body: urlencoded ? body : JSON.stringify(body),
       };
       if (body) raw["body"] = urlencoded ? JSON.stringify(body) : body;
@@ -129,6 +124,14 @@ const useAPIsHook = () => {
     });
   }
 
+  async function getVideoListAPI(pageNO = 1) {
+    return fetchREQ({
+      apiURI: `https://api.pexels.com/videos/search?query=nature&per_page=${pageNO}`,
+      method: 'GET',
+      token: "jb14cKNctP4fR0c9SbI696b2nel6Mlj700RQJNQBbcfemp7xzCZIPbTa",
+    });
+  }
+
   function abortAPI() { try { abort(); } catch (e) { /* LOG(e, "ERROR :: abortAPI =>>"); */ } }
   useEffect(() => {
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => { runOnJS(abortAPI)(); return false; });
@@ -137,7 +140,7 @@ const useAPIsHook = () => {
   useEffect(() => { if (!isFocused) runOnJS(abortAPI)(); }, [isFocused]);
 
   return {
-    abortAPI, getUserDetailsAPI
+    abortAPI, getUserDetailsAPI, getVideoListAPI
   };
 
 }

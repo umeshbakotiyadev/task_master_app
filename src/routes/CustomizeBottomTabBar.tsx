@@ -17,8 +17,7 @@ const CustomizeBottomTabBar = ({ state, descriptors, navigation }: any) => {
         function getIcon(name: string): { svg: ReactNode } {
             switch (name) {
                 case 'FriendsListingScr': return ({ svg: <LIST_IC color={isFocused ? col.WHITE : col.BLACK} /> })
-                case 'GroupListingScr': return ({ svg: <Fragment /* color={isFocused ? col.WHITE : col.BLACK} */ /> })
-                case 'ProfileScr': return ({ svg: <Fragment /* color={isFocused ? col.WHITE : col.BLACK} */ /> })
+                case 'VideoListingScr': return ({ svg: <LIST_IC color={isFocused ? col.WHITE : col.BLACK} /> })
                 default: return { svg: <></> };
             }
         }

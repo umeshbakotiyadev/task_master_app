@@ -1,7 +1,7 @@
 import { Dimensions } from "react-native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { _isDEV, _isPUBLISH_MODE } from "../utils";
-import { taskListDataOBJType, taskListDataType } from "../types";
+import { taskListDataOBJType, taskListDataType, videoItemOBJType, videoItemType } from "../types";
 
 
 const _HEIGHT = Dimensions.get('window').height;
@@ -110,8 +110,31 @@ function makeTaskListDataForLocalStoreFN(data: Array<taskListDataType>): taskLis
     return dataOBJ;
 }
 
+function makeVideoListDataForLocalStoreFN(data: Array<videoItemType>): videoItemOBJType {
+    const dataOBJ: videoItemOBJType = {};
+    data.forEach(ele => {
+        if (!ele?.id) return;
+        const fID = ele?.id ?? generateUniqueID();
+        dataOBJ[ele?.id ?? "--"] = { ...ele, id: fID };
+    });
+    return dataOBJ;
+}
+
+const formatDurationFN = (secondsInput: number) => {
+    `worklet`
+    // Convert input to integer to avoid floating-point issues
+    const seconds = Math.floor(secondsInput);
+
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secondsRemaining = seconds % 60;
+
+    // return `${hours > 0 ? `${hours}:` : ''}${String(minutes).padStart(2, '0')}:${String(secondsRemaining).padStart(2, '0')}`;
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secondsRemaining).padStart(2, '0')}`;
+};
+
 export {
     Size, _HEIGHT, _WIDTH, decimal, generateUniqueID, isUrl, deepClone, isValid,
-    isErr, regex, isValidUrl, pLOG,
-    makeTaskListDataForLocalStoreFN
+    isErr, regex, isValidUrl, pLOG, formatDurationFN,
+    makeTaskListDataForLocalStoreFN, makeVideoListDataForLocalStoreFN
 }

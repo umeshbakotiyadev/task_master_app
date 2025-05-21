@@ -25,11 +25,13 @@ const onStateChange: any = React.createRef<any>();
 
 const zuStandInitStore: zuStandInitStoreType = {
     taskListData: {},
+    videoListData: {},
 };
 
 const setZuStandInitStore: setZuStandInitStoreType = {
     setTaskListData(by) { },
     setResetTaskListData(by) { },
+    setVideoListData(by) { },
 }
 
 const zuStandStoreOBJ: zuStandStoreOBJType = { ...zuStandInitStore, ...setZuStandInitStore };
