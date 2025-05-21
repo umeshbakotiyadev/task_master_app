@@ -311,7 +311,7 @@ type taskListDataType = {
     id?: string;
     title?: string;
     description?: string;
-    dueDate?: Date;
+    dueDate?: Date | string;
     completed?: boolean;
 }
 
